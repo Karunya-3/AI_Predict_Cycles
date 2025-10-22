@@ -31,4 +31,3 @@ Here’s an example of what the dataset looks like:
 | User ID | Age | BMI  | Stress Level | Exercise Frequency | Sleep Hours | Diet       | Cycle Start Date | Cycle Length | Period Length | Next Cycle Start Date | Symptoms     |
 |---------|-----|------|--------------|--------------------|-------------|------------|------------------|--------------|---------------|-----------------------|--------------|
 | 1       | 28  | 24.3 | 3            | Moderate           | 7.2         | Balanced   | 2023-01-15      | 28           | 5             | 2023-02-12           | Cramps       |
-| 1       | 28  | 24.3 | 3            | Moderate           | 7.2         | Balanced   | 2023-
