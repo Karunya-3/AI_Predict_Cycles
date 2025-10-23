@@ -32,6 +32,18 @@ def load_models():
 # Load models
 best_model, scaler, label_encoders = load_models()
 
+def calculate_bmi(weight_kg, height_feet, height_inches):
+    """Calculate BMI from weight in kg and height in feet/inches"""
+    # Convert height to meters
+    total_height_inches = (height_feet * 12) + height_inches
+    height_meters = total_height_inches * 0.0254
+    
+    # Calculate BMI
+    if height_meters > 0:
+        bmi = weight_kg / (height_meters ** 2)
+        return round(bmi, 1)
+    return 0
+
 def scale_numerical_features(df, scaler):
     df = df.copy()
     numerical_features = ["Age", "BMI", "Stress Level", "Sleep Hours", "Period Length"]
@@ -262,7 +274,21 @@ def main():
     with st.sidebar.form("user_input_form"):
         st.subheader("Personal Details")
         age = st.number_input("Age", min_value=12, max_value=60, value=25, step=1)
-        bmi = st.number_input("BMI", min_value=15.0, max_value=40.0, value=22.0, step=0.1)
+        
+        # Height and Weight inputs
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            height_feet = st.number_input("Height (Feet)", min_value=4, max_value=7, value=5, step=1)
+        with col2:
+            height_inches = st.number_input("Height (Inches)", min_value=0, max_value=11, value=5, step=1)
+        with col3:
+            weight_kg = st.number_input("Weight (kg)", min_value=30.0, max_value=150.0, value=60.0, step=0.5)
+        
+        # Calculate BMI
+        bmi = calculate_bmi(weight_kg, height_feet, height_inches)
+        
+        # Display BMI
+        st.text_input("Calculated BMI", value=f"{bmi}", disabled=True)
         
         st.subheader("Lifestyle Factors")
         stress = st.slider("Stress Level (1-5)", min_value=1, max_value=5, value=3, 
@@ -359,13 +385,21 @@ def main():
             st.subheader("📊 Input Summary")
             col1, col2 = st.columns(2)
             with col1:
+                st.write("**Personal Details:**")
+                st.write(f"- Age: {age} years")
+                st.write(f"- Height: {height_feet}'{height_inches}\"")
+                st.write(f"- Weight: {weight_kg} kg")
+                st.write(f"- BMI: {bmi}")
+                
                 st.write("**Lifestyle Factors:**")
                 st.write(f"- Exercise: {exercise}")
                 st.write(f"- Diet: {diet}")
-                st.write(f"- Stress Level: {stress}/5")
-                st.write(f"- Sleep: {sleep} hours")
             
             with col2:
+                st.write("**Health Metrics:**")
+                st.write(f"- Stress Level: {stress}/5")
+                st.write(f"- Sleep: {sleep} hours")
+                
                 st.write("**Cycle Information:**")
                 st.write(f"- Period Length: {period_length} days")
                 st.write(f"- Average Cycle: {avg_cycle_length} days")
